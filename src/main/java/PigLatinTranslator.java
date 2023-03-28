@@ -1,34 +1,47 @@
+import java.util.Scanner;
+
+
 public class PigLatinTranslator {
 
-    // 1. Create a main method
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("Enter a Pig Latin phrase: ");
+        String pigLatinPhrase = scanner.nextLine();
 
-        // 2. Create a Scanner object
+        String englishPhrase = translatePigLatinToEnglish(pigLatinPhrase);
 
+        System.out.println("English equivalent: " + englishPhrase);
+    }
 
-        // 3. Ask the user to enter some text to translate into Pig Latin
-        // and save their response into a String variable
+    public static String translatePigLatinToEnglish(String pigLatinPhrase) {
+        String[] words = pigLatinPhrase.split(" ");
 
+        StringBuilder englishPhraseBuilder = new StringBuilder();
 
-        // 4. Call the translateEnglishToPigLatin() method from the Translator class
-        // and pass in the user's response. Make sure to save the output into
-        // another String variable. Example:
-        // String pigLatinPhrase = Translator.translateEnglishToPigLatin(userText);
+        for (String word : words) {
+            if (word.endsWith("way")) {
+                // Word ends in "way", so it's already in English
+                englishPhraseBuilder.append(word.substring(0, word.length() - 3)).append(" ");
+            } else {
+                // Word starts with a consonant cluster followed by "ay"
+                int firstVowelIndex = -1;
 
+                for (int i = 0; i < word.length(); i++) {
+                    if ("aeiouAEIOU".indexOf(word.charAt(i)) >= 0) {
+                        firstVowelIndex = i;
+                        break;
+                    }
+                }
 
-        // 5. Print out the translated text to the user
+                String consonantCluster = word.substring(0, firstVowelIndex);
+                String restOfWord = word.substring(firstVowelIndex, word.length() - 2);
 
+                englishPhraseBuilder.append(restOfWord).append(consonantCluster).append(" ");
+            }
+        }
 
-        // 6. Call the speak() method from the Translator class to have your computer
-        // speak the Pig Latin phrase! Example:
-        // Translator.speak(pigLatinPhrase);
-
-
-        /*
-         * BONUS: Can figure out how to add functionality to accept a Pig-Latin
-         *        phrase from the user and translate it to English??
-         *        You may find the following method useful:
-         *        Translator.translatePigLatinToEnglish(pigLatinPhrase)
-         */
+        return englishPhraseBuilder.toString().trim();
+    }
 
 }
